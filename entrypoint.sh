@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
-echo "Hello $1"
+echo "Omnibenchmarking $YAML"
 
-time=$(date)
+env
 
-echo "time=$time" >> $GITHUB_OUTPUT
+echo "$YAML" >> "$GITHUB_OUTPUT"

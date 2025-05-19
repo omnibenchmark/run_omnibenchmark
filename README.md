@@ -29,5 +29,6 @@ jobs:
         uses: imallona/run_omnibenchmark_miniforge@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OMNIBENCH_YAML: foo.yml
+        with:
+          omnibenchmark_yaml: tests/Clustering.yaml
 ```

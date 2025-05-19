@@ -1,0 +1,21 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use action
+        uses: imallona/run_omnibenchmark_miniforge@dev
+        with:
+          omnibenchmark_yaml: tests/Clustering.yaml
+          
+      # - name: Upload Build Artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: workspace_artifacts
+      #     path: ${{ github.workspace }}

@@ -1,16 +1,17 @@
-# action.yml
-name: 'Hello world'
-description: 'Greet someone and record the time'
+name: Omnibenchmark runner
+author: Izaskun Mallona
+description: Runs omnibenchmarks with miniforge backends
+
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  omnibenchmark_yaml:
+    description: path to the omnibenchmark yaml
     required: true
-    default: 'World'
+    default: 'tests/Clustering.yaml'
 outputs:
   time: # id of output
-    description: 'The time we greeted you'
+    description: 'Benchmarking timestamp.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.who-to-greet }}
+  env: 
+    YAML: ${{ inputs.omnibenchmark_yaml }}
