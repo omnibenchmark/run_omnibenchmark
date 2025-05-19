@@ -4,4 +4,6 @@ echo "Omnibenchmarking $YAML"
 
 env
 
-echo "$YAML" >> "$GITHUB_OUTPUT"
+cat "$YAML"
+
+touch hello.world
