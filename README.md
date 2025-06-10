@@ -1,6 +1,6 @@
 # GitHub Action to run an omnibenchmark
 
-Runs an omnibenchmark.
+Runs an [omnibenchmark](omnibenchmark.org) using GitHub actions.
 
 # Usage
 
@@ -14,14 +14,17 @@ on:
 
 jobs:
   build:
-    name: Run ob
-    runs-on: ubuntu-latest 
+    name: Run ob                                     ## the name of the run
+    runs-on: ubuntu-latest                           ## using the latest ubuntu(docker) GH runner
     steps:
-      - name: Use action
-        uses: imallona/run_omnibenchmark@main
+      - name: Checkout                               ## to checkout the tested repo
+        uses: actions/checkout@v4
+
+      - name: Use action                             ## to run the benchmark specified within... 
+        uses: omnibenchmark/run_omnibenchmark@main
         with:
-          yaml: tests/Clustering_conda.yaml
-          backend: conda
+          yaml: tests/Clustering_conda.yaml          ##  this yaml
+          backend: conda                             ## using `conda` as software management strategy
 ```
 
 ## Input variables
@@ -58,7 +61,7 @@ You might want to register your own runners and not use the
 
 directive but rather
 
-```
+```yaml
     runs-on: self-hosted
 ```
 
@@ -66,7 +69,7 @@ to compute elsewhere, and not GitHub's runners.
 
 ## Conda envs
 
-When using conda as backend, the `benchmarking yaml` has to specify the adequate `conda yaml` environment files. Please track these files somewhere the action can find them. For instance, [our `Clustering_conda.yml` example](https://github.com/imallona/run_omnibenchmark/blob/main/tests/Clustering_conda.yml) points to ([line 13](https://github.com/imallona/run_omnibenchmark/blob/edb3391553760ae7ff21a65a3c85121f5ad5ea1b/tests/Clustering_conda.yml#L13))
+When using conda as backend, the `benchmarking yaml` has to specify the adequate `conda yaml` environment files. Please track these files somewhere the action can find them. For instance, [our `Clustering_conda.yml` example](https://github.com/omnibenchmark/run_omnibenchmark/blob/main/tests/Clustering_conda.yml) points to ([line 13](https://github.com/imallona/run_omnibenchmark/blob/edb3391553760ae7ff21a65a3c85121f5ad5ea1b/tests/Clustering_conda.yml#L13))
 
 ```yaml
 software_backend: conda
@@ -76,7 +79,7 @@ software_environments:
     conda: envs/clustbench.yml ## <-------------------- here
 ```
 
-which is available at [`envs/clustbench.yml`](https://github.com/imallona/run_omnibenchmark/blob/main/tests/envs/fcps.yml) relative (relative path) to the `Clustering_conda.yaml` file.
+which is available at [`envs/clustbench.yml`](https://github.com/omnibenchmark/run_omnibenchmark/blob/main/tests/envs/fcps.yml) relative (relative path) to the `Clustering_conda.yaml` file.
 
 # Disclaimer of warranty
 
