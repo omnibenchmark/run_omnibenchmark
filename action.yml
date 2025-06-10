@@ -7,25 +7,17 @@ inputs:
     description: path to the omnibenchmark yaml
     required: true
   backend:
-    description: software backend to use (miniforge, micromamba, apptainer)
+    description: software backend to use (conda or apptainer)
     required: true
     default: conda
   cores:
     description: number of concurrent jobs
     required: false
     default: 1
-# outputs:
-#   time: # id of output
-#     description: 'Benchmarking timestamp.'
 runs:
-  # using: 'docker'
-  # image: 'Dockerfile'
   using: "composite"
-  # env: 
-  #   YAML: ${{ inputs.yaml }}
-  #   BACKEND: ${{ inputs.backend }}
   steps:
-    - name: Set vars
+    - name: Set vars for global use
       id: vars
       shell: bash
       run: |
@@ -47,9 +39,6 @@ runs:
       with:
         environment-file: env/omnibenchmark_conda.yaml
         cache-environment: true
-        # micromamba-version: ${{ matrix.micromamba-version }}
-        # download-micromamba: true
-        # micromamba-binary-path:  ${{ runner.temp }}/bin/micromamba-${{ matrix.micromamba-version }}/micromamba
         create-args: >-
           python=3.12
           pip
