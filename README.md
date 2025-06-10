@@ -1,6 +1,6 @@
 # GitHub Action to run an omnibenchmark
 
-Runs an [omnibenchmark](omnibenchmark.org) using GitHub actions.
+Runs an [omnibenchmark](https://omnibenchmark.org) using GitHub actions.
 
 # Usage
 
@@ -69,17 +69,17 @@ to compute elsewhere, and not GitHub's runners.
 
 ## Conda envs
 
-When using conda as backend, the `benchmarking yaml` has to specify the adequate `conda yaml` environment files. Please track these files somewhere the action can find them. For instance, [our `Clustering_conda.yml` example](https://github.com/omnibenchmark/run_omnibenchmark/blob/main/tests/Clustering_conda.yml) points to ([line 13](https://github.com/imallona/run_omnibenchmark/blob/edb3391553760ae7ff21a65a3c85121f5ad5ea1b/tests/Clustering_conda.yml#L13))
+When using conda as backend, the `benchmarking yaml` has to specify the adequate `conda yaml` environment files. Please track these files somewhere the action can find them. For instance, [our `Clustering_conda.yml` example](tests/Clustering_conda.yml) points to ([line 13](tests/Clustering_conda.yml#L13))
 
 ```yaml
 software_backend: conda
 software_environments:
   clustbench:
     description: "clustbench on py3.12.6"
-    conda: envs/clustbench.yml ## <-------------------- here
+    conda: envs/clustbench.yml ## <------ relative path to the conda envs
 ```
 
-which is available at [`envs/clustbench.yml`](https://github.com/omnibenchmark/run_omnibenchmark/blob/main/tests/envs/fcps.yml) relative (relative path) to the `Clustering_conda.yaml` file.
+so `clustbench.yml` must be available at [`envs/clustbench.yml`](tests/envs/fcps.yml), which is a relative path to the `Clustering_conda.yaml` file path.
 
 # Disclaimer of warranty
 

@@ -1,6 +1,6 @@
-name: Run omnibenchmark via a github action
+name: Run omnibenchmark
 author: Izaskun Mallona izaskun.mallona@gmail.com
-description: Runs omnibenchmarks
+description: Runs an omnibenchmark YAML using github actions
 
 inputs:
   yaml:
@@ -15,7 +15,7 @@ inputs:
       - conda
       - apptainer
   cores:
-    description: number of concurrent jobs
+    description: number of concurrent jobs and perhaps cores (`ob --cores`)
     required: false
     default: 1
     type: number
@@ -33,7 +33,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set vars for global use
+    - name: Set variabless for global use
       id: vars
       shell: bash
       run: |
@@ -41,15 +41,17 @@ runs:
         echo "BACKEND=${{ inputs.backend }}" >> "${GITHUB_OUTPUT}"
         echo "CORES=${{ inputs.cores }}" >> "${GITHUB_OUTPUT}"
         echo "OB_BRANCH=${{ inputs.omnibenchmark_branch }}" >> "${GITHUB_OUTPUT}"
+      
     - name: Check out repository
       uses: actions/checkout@v4
       
-    - uses: eWaterCycle/setup-apptainer@v2
+    - name: Install apptainer
+      uses: eWaterCycle/setup-apptainer@v2
       if: inputs.backend == 'apptainer'
       with:
         apptainer-version: 1.4.0
 
-    - name: Install ob reqs (with) micromamba
+    - name: Install ob requirements (with) micromamba
       uses: mamba-org/setup-micromamba@v2
       if: (inputs.backend == 'apptainer' || inputs.backend == 'conda') && inputs.conda_handler == 'micromamba'
       with:
@@ -59,7 +61,7 @@ runs:
           python=3.12
         post-cleanup: environment # all
 
-    - name: Install ob reqs (with) miniforge
+    - name: Install ob requirements (with) miniforge
       uses: conda-incubator/setup-miniconda@v3
       if: (inputs.backend == 'apptainer' || inputs.backend == 'conda') && inputs.conda_handler == 'miniforge'
       with:
@@ -70,7 +72,7 @@ runs:
         auto-update-conda: true
         channels: conda-forge
       
-    - name: Install omnibenchmark (main)
+    - name: Install omnibenchmark
       env:
         OB_BRANCH: ${{ steps.vars.outputs.OB_BRANCH }} 
       shell: bash -l {0}
@@ -86,7 +88,7 @@ runs:
       run: |
         ob run benchmark -b "$YAML" --local --cores "$CORES" --yes
          
-    - name: Upload Build Artifacts
+    - name: Upload benchmark files (artifact)
       uses: actions/upload-artifact@v4
       with:
         name: Benchmarking results
