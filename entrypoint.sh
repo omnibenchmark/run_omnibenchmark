@@ -10,7 +10,7 @@ cat "$BACKEND"
 # use case statement to make decision for rental
 case "$BACKEND" in
     "miniforge")
-        echo "Running using miniforge.";;
+        echo "Running using miniforge.";;    
     "micromamba")
         echo "Running using micromamba.";;
     "apptainer")

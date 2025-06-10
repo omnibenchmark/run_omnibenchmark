@@ -12,7 +12,8 @@ jobs:
       - name: Use action
         uses: imallona/run_omnibenchmark_miniforge@main
         with:
-          omnibenchmark_yaml: tests/Clustering.yaml
+          yaml: tests/Clustering.yaml
+          backend: miniforge
           
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4

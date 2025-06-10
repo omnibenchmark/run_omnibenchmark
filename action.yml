@@ -6,7 +6,6 @@ inputs:
   yaml:
     description: path to the omnibenchmark yaml
     required: true
-    default: 'tests/Clustering.yaml'
   backend:
     description: software backend to use (miniforge, micromamba, apptainer)
     required: true
