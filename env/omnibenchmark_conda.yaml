@@ -9,4 +9,4 @@ dependencies:
   - conda-forge::mamba >= 1.5.10
   - conda-forge::lmod >= 8.7.25
   - conda-forge::pip
-  # - conda-forge::conda >= 25.5.1
+  - conda-forge::conda >= 25.5.1
