@@ -28,12 +28,8 @@ jobs:
     name: run_clustbench_oras
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        ob_branch: [main]
-        micromamba-version: ['2.1.1-0']
       fail-fast: false
     concurrency:
-      group: oras-${{ matrix.micromamba-version }}-${{ matrix.ob_branch }}
       cancel-in-progress: false # true
     steps:
       - name: Check out repository
@@ -49,10 +45,10 @@ jobs:
         if: inputs.backend == 'apptainer' || inputs.backend == 'conda'
         with:
           cache-environment: false # true
-          micromamba-version: ${{ matrix.micromamba-version }}
+          # micromamba-version: ${{ matrix.micromamba-version }}
           download-micromamba: true
-          micromamba-binary-path:  ${{ runner.temp }}/bin/micromamba-${{ matrix.micromamba-version }}/micromamba
-          environment-name: test-env-${{matrix.ob_branch }}-${{ matrix.micromamba-version }}
+          # micromamba-binary-path:  ${{ runner.temp }}/bin/micromamba-${{ matrix.micromamba-version }}/micromamba
+          environment-name: conda-micromamba
           create-args: >-
             python=3.12
             pip

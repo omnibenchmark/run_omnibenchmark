@@ -1,4 +1,4 @@
-name: Test
+name: test_conda
 
 on: [push]
 
@@ -10,10 +10,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Use action
-        uses: imallona/run_omnibenchmark_miniforge@main
+        uses: imallona/run_omnibenchmark@dev
         with:
           yaml: tests/Clustering.yaml
-          backend: miniforge
+          backend: conda
+          cores: 1
           
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
