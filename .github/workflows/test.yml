@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Use action
-        uses: imallona/run_omnibenchmark_miniforge
+        uses: imallona/run_omnibenchmark_miniforge@main
         with:
           omnibenchmark_yaml: tests/Clustering.yaml
           
