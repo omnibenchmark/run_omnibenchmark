@@ -7,13 +7,22 @@ inputs:
     description: path to the omnibenchmark yaml
     required: true
   backend:
-    description: software backend to use (conda or apptainer)
+    description: software backend to use (only conda or apptainer)
     required: true
     default: conda
+    type: string
+    options:
+      - conda
+      - apptainer
   cores:
     description: number of concurrent jobs
     required: false
     default: 1
+    type: number
+  omnibenchmark_branch:
+    description: omnibenchmark branch to test
+    default: main
+    type: string
 runs:
   using: "composite"
   steps:
@@ -24,7 +33,7 @@ runs:
         echo "YAML=${{ inputs.yaml }}" >> "${GITHUB_OUTPUT}"
         echo "BACKEND=${{ inputs.backend }}" >> "${GITHUB_OUTPUT}"
         echo "CORES=${{ inputs.cores }}" >> "${GITHUB_OUTPUT}"
-        
+        echo "OB_BRANCH=${{ inputs.omnibenchmark_branch }}" >> "${GITHUB_OUTPUT}"
     - name: Check out repository
       uses: actions/checkout@v4
       
@@ -46,9 +55,11 @@ runs:
         post-cleanup: environment # all
 
     - name: Install omnibenchmark (main)
+      env:
+        OB_BRANCH: ${{ steps.vars.outputs.OB_BRANCH }} 
       shell: bash -l {0}
       run: |
-        pip install git+https://github.com/omnibenchmark/omnibenchmark.git
+        pip install git+https://github.com/omnibenchmark/omnibenchmark.git@"$OB_BRANCH"
 
     - name: Run benchmark
       env:

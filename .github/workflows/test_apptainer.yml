@@ -12,7 +12,7 @@ jobs:
       - name: Use action
         uses: imallona/run_omnibenchmark@main
         with:
-          yaml: tests/Clustering_apptainer.yaml
+          yaml: tests/Clustering_apptainer.yml
           backend: apptainer
           cores: 1
 
