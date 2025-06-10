@@ -17,52 +17,61 @@ inputs:
 # outputs:
 #   time: # id of output
 #     description: 'Benchmarking timestamp.'
-# runs:
-#   using: 'docker'
-#   image: 'Dockerfile'
-#   env: 
-#     YAML: ${{ inputs.yaml }}
-#     BACKEND: ${{ inputs.backend }}
-jobs:
-  run-benchmark-oras:
-    name: run_clustbench_oras
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    concurrency:
-      cancel-in-progress: false # true
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - uses: eWaterCycle/setup-apptainer@v2
-        if: inputs.backend == 'apptainer'
-        with:
-          apptainer-version: 1.4.0
-
-      - name: Install ob (with) micromamba
-        uses: mamba-org/setup-micromamba@v2
-        if: inputs.backend == 'apptainer' || inputs.backend == 'conda'
-        with:
-          cache-environment: false # true
-          # micromamba-version: ${{ matrix.micromamba-version }}
-          download-micromamba: true
-          # micromamba-binary-path:  ${{ runner.temp }}/bin/micromamba-${{ matrix.micromamba-version }}/micromamba
-          environment-name: conda-micromamba
-          create-args: >-
-            python=3.12
-            pip
-            conda
-          post-cleanup: environment # all
+runs:
+  # using: 'docker'
+  # image: 'Dockerfile'
+  using: "composite"
+  # env: 
+  #   YAML: ${{ inputs.yaml }}
+  #   BACKEND: ${{ inputs.backend }}
+  steps:
+    - name: Set vars
+      id: vars
+      shell: bash
+      run: |
+        echo "YAML=${{ inputs.yaml }}" >> "${GITHUB_OUTPUT}"
+        echo "BACKEND=${{ inputs.backend }}" >> "${GITHUB_OUTPUT}"
+        echo "CORES=${{ inputs.cores }}" >> "${GITHUB_OUTPUT}"
+        
+    - name: Check out repository
+      uses: actions/checkout@v4
       
-      - name: Overwrite omnibenchmark CLI to branch
-        shell: bash -l {0}
-        run: |
-          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@${{ matrix.ob_branch }}
+    - uses: eWaterCycle/setup-apptainer@v2
+      if: inputs.backend == 'apptainer'
+      with:
+        apptainer-version: 1.4.0
 
-      - name: Run benchmark
-        shell: bash -l {0}
-        run: |
-          mkdir -p output
-          cd output
-          ob run benchmark -b {{ inputs.yaml }} --local --cores {{ input.cores }} --yes
+    - name: Install ob (with) micromamba
+      uses: mamba-org/setup-micromamba@v2
+      if: inputs.backend == 'apptainer' || inputs.backend == 'conda'
+      with:
+        environment-file: env/omnibenchmark_conda.yaml
+        cache-environment: true
+        # micromamba-version: ${{ matrix.micromamba-version }}
+        # download-micromamba: true
+        # micromamba-binary-path:  ${{ runner.temp }}/bin/micromamba-${{ matrix.micromamba-version }}/micromamba
+        create-args: >-
+          python=3.12
+          pip
+          conda
+        post-cleanup: environment # all
+
+    - name: Install omnibenchmark (main)
+      shell: bash -l {0}
+      run: |
+        pip install git+https://github.com/omnibenchmark/omnibenchmark.git
+
+    - name: Run benchmark
+      env:
+        YAML: ${{ steps.vars.outputs.YAML }}
+        BACKEND: ${{ steps.vars.outputs.BACKEND }}
+        CORES: ${{ steps.vars.outputs.CORES }}        
+      shell: bash -l {0}
+      run: |
+        ob run benchmark -b "$YAML" --local --cores "$CORES" --yes
+         
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Benchmarking results
+        path: ${{ github.workspace }}/out
