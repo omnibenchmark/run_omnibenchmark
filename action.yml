@@ -9,12 +9,64 @@ inputs:
   backend:
     description: software backend to use (miniforge, micromamba, apptainer)
     required: true
-outputs:
-  time: # id of output
-    description: 'Benchmarking timestamp.'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env: 
-    YAML: ${{ inputs.yaml }}
-    BACKEND: ${{ inputs.backend }}
+    default: conda
+  cores:
+    description: number of concurrent jobs
+    required: false
+    default: 1
+# outputs:
+#   time: # id of output
+#     description: 'Benchmarking timestamp.'
+# runs:
+#   using: 'docker'
+#   image: 'Dockerfile'
+#   env: 
+#     YAML: ${{ inputs.yaml }}
+#     BACKEND: ${{ inputs.backend }}
+jobs:
+  run-benchmark-oras:
+    name: run_clustbench_oras
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ob_branch: [main]
+        micromamba-version: ['2.1.1-0']
+      fail-fast: false
+    concurrency:
+      group: oras-${{ matrix.micromamba-version }}-${{ matrix.ob_branch }}
+      cancel-in-progress: false # true
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - uses: eWaterCycle/setup-apptainer@v2
+        if: inputs.backend == 'apptainer'
+        with:
+          apptainer-version: 1.4.0
+
+      - name: Install ob (with) micromamba
+        uses: mamba-org/setup-micromamba@v2
+        if: inputs.backend == 'apptainer' || inputs.backend == 'conda'
+        with:
+          cache-environment: false # true
+          micromamba-version: ${{ matrix.micromamba-version }}
+          download-micromamba: true
+          micromamba-binary-path:  ${{ runner.temp }}/bin/micromamba-${{ matrix.micromamba-version }}/micromamba
+          environment-name: test-env-${{matrix.ob_branch }}-${{ matrix.micromamba-version }}
+          create-args: >-
+            python=3.12
+            pip
+            conda
+          post-cleanup: environment # all
+      
+      - name: Overwrite omnibenchmark CLI to branch
+        shell: bash -l {0}
+        run: |
+          pip install git+https://github.com/omnibenchmark/omnibenchmark.git@${{ matrix.ob_branch }}
+
+      - name: Run benchmark
+        shell: bash -l {0}
+        run: |
+          mkdir -p output
+          cd output
+          ob run benchmark -b {{ inputs.yaml }} --local --cores {{ input.cores }} --yes
