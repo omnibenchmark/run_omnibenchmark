@@ -15,4 +15,5 @@ jobs:
           yaml: tests/Clustering_conda.yml
           backend: conda
           cores: 1
+          conda_handler: miniforge
 

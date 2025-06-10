@@ -1,0 +1,19 @@
+name: test_conda
+
+on: [push]
+
+jobs:
+  plain_conda:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use action
+        uses: imallona/run_omnibenchmark@main
+        with:
+          yaml: tests/Clustering_conda.yml
+          backend: conda
+          cores: 1
+          conda_handler: micromamba
+

@@ -23,6 +23,13 @@ inputs:
     description: omnibenchmark branch to test
     default: main
     type: string
+  conda_handler:
+    description: backend to handle conda deps
+    default: micromamba
+    type: string
+    options:
+      - micromamba
+      - miniforge
 runs:
   using: "composite"
   steps:
@@ -42,18 +49,29 @@ runs:
       with:
         apptainer-version: 1.4.0
 
-    - name: Install ob (with) micromamba
+    - name: Install ob reqs (with) micromamba
       uses: mamba-org/setup-micromamba@v2
-      if: inputs.backend == 'apptainer' || inputs.backend == 'conda'
+      if: (inputs.backend == 'apptainer' || inputs.backend == 'conda') && inputs.conda_handler == 'micromamba'
       with:
         environment-file: env/omnibenchmark_conda.yaml
         cache-environment: true
         create-args: >-
           python=3.12
-          pip
-          conda
+          # pip
+          # conda
         post-cleanup: environment # all
 
+    - name: Install ob reqs (with) miniforge
+      uses: conda-incubator/setup-miniconda@v3
+      if: (inputs.backend == 'apptainer' || inputs.backend == 'conda') && inputs.conda_handler == 'miniforge'
+      with:
+        miniforge-variant: Miniforge3
+        use-mamba: true
+        environment-file: env/omnibenchmark_conda.yaml
+        python-version: "3.12"
+        auto-update-conda: true
+        channels: conda-forge
+      
     - name: Install omnibenchmark (main)
       env:
         OB_BRANCH: ${{ steps.vars.outputs.OB_BRANCH }} 
