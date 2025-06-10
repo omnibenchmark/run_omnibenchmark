@@ -77,3 +77,11 @@ software_environments:
 ```
 
 which is available at [`envs/clustbench.yml`](https://github.com/imallona/run_omnibenchmark/blob/main/tests/envs/fcps.yml) relative (relative path) to the `Clustering_conda.yaml` file.
+
+# Disclaimer of warranty
+
+Omnibenchmark incorporates great FOSS components, including but not limited to: snakemake, easybuild, apptainer, lmod and git. Thank you!
+
+Our workflow reuses actions from third party providers as well. Thank you!
+
+Hence, and particularly when running this action on self-hosted runners: THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.

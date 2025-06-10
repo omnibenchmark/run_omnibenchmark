@@ -57,8 +57,6 @@ runs:
         cache-environment: true
         create-args: >-
           python=3.12
-          # pip
-          # conda
         post-cleanup: environment # all
 
     - name: Install ob reqs (with) miniforge
