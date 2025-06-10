@@ -1,6 +1,6 @@
 # GitHub Action to run an omnibenchmark using miniforge (conda)
 
-This GitHub action will run an omnibenchmark handling the software using miniforge (that is, miniconda using conda-forge).
+Runs an omnibenchmark using a defined software backend.
 
 # Usage
 
@@ -11,11 +11,10 @@ This GitHub action will run an omnibenchmark handling the software using minifor
 ## Example usage
 
 ```yaml
-name: Run ob using miniforge
+name: Run test ob
 on:
   push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -26,9 +25,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Use action
-        uses: imallona/run_omnibenchmark_miniforge@dev
+        uses: imallona/run_omnibenchmark@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          omnibenchmark_yaml: tests/Clustering.yaml
+          yaml: tests/Clustering.yaml
+          backend: miniforge
 ```

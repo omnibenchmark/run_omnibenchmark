@@ -1,12 +1,15 @@
-name: Omnibenchmark runner
-author: Izaskun Mallona
-description: Runs omnibenchmarks with miniforge backends
+name: Run omnibenchmark via a github action
+author: Izaskun Mallona izaskun.mallona@gmail.com
+description: Runs omnibenchmarks
 
 inputs:
-  omnibenchmark_yaml:
+  yaml:
     description: path to the omnibenchmark yaml
     required: true
     default: 'tests/Clustering.yaml'
+  backend:
+    description: software backend to use (miniforge, micromamba, apptainer)
+    required: true
 outputs:
   time: # id of output
     description: 'Benchmarking timestamp.'
@@ -14,4 +17,5 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   env: 
-    YAML: ${{ inputs.omnibenchmark_yaml }}
+    YAML: ${{ inputs.yaml }}
+    BACKEND: ${{ inputs.backend }}
