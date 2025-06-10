@@ -19,6 +19,9 @@ case "$BACKEND" in
         echo "Invalid $BACKEND, aborting.";;
 esac
 
-touch hello.world
+mkdir -p output
+cd output
+
+touch "$BACKEND"_hello.world
 
 echo "$YAML omnibenchmark has completed."
