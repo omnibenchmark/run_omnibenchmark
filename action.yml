@@ -33,6 +33,18 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Set variables for global use
+      id: vars
+      shell: bash
+      run: |
+        echo "YAML=${{ inputs.yaml }}" >> "${GITHUB_OUTPUT}"
+        echo "BACKEND=${{ inputs.backend }}" >> "${GITHUB_OUTPUT}"
+        echo "CORES=${{ inputs.cores }}" >> "${GITHUB_OUTPUT}"
+        echo "OB_BRANCH=${{ inputs.omnibenchmark_branch }}" >> "${GITHUB_OUTPUT}"
+      
+    - name: Check out repository
+      uses: actions/checkout@v4
+
     - name: Create omnibenchmark conda env file
       id: create_env
       shell: bash
@@ -51,19 +63,7 @@ runs:
           mkdir -p env
           mv omnibenchmark_conda.yaml env
           cat env/omnibenchmark_conda.yaml
-      
-    - name: Set variables for global use
-      id: vars
-      shell: bash
-      run: |
-        echo "YAML=${{ inputs.yaml }}" >> "${GITHUB_OUTPUT}"
-        echo "BACKEND=${{ inputs.backend }}" >> "${GITHUB_OUTPUT}"
-        echo "CORES=${{ inputs.cores }}" >> "${GITHUB_OUTPUT}"
-        echo "OB_BRANCH=${{ inputs.omnibenchmark_branch }}" >> "${GITHUB_OUTPUT}"
-      
-    - name: Check out repository
-      uses: actions/checkout@v4
-      
+            
     - name: Install apptainer
       uses: eWaterCycle/setup-apptainer@v2
       if: inputs.backend == 'apptainer'
