@@ -48,6 +48,7 @@ runs:
           echo "  - conda-forge::pip >= 25.0.0"    >> omnibenchmark_conda.yaml
           echo "  - conda-forge::mamba >= 1.5.10"  >> omnibenchmark_conda.yaml
           echo "  - conda-forge::conda >= 25.5.1"  >> omnibenchmark_conda.yaml
+          cat omnibenchmark_conda.yaml
       
     - name: Set variables for global use
       id: vars
@@ -71,7 +72,7 @@ runs:
       uses: mamba-org/setup-micromamba@v2
       if: (inputs.backend == 'apptainer' || inputs.backend == 'conda') && inputs.conda_handler == 'micromamba'
       with:
-        environment-file: omnibenchmark_conda.yaml
+        environment-file: "${{ github.workspace }}"/omnibenchmark_conda.yaml
         cache-environment: true
         create-args: >-
           python=3.12
@@ -83,7 +84,7 @@ runs:
       with:
         miniforge-variant: Miniforge3
         use-mamba: true
-        environment-file: omnibenchmark_conda.yaml
+        environment-file: "${{ github.workspace }}"/omnibenchmark_conda.yaml
         python-version: "3.12"
         auto-update-conda: true
         channels: conda-forge
