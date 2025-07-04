@@ -55,7 +55,7 @@ runs:
       uses: mamba-org/setup-micromamba@v2
       if: (inputs.backend == 'apptainer' || inputs.backend == 'conda') && inputs.conda_handler == 'micromamba'
       with:
-        environment-file: env/omnibenchmark_conda.yaml
+        environment-file: ./.github/workflows/env/omnibenchmark_conda.yaml
         cache-environment: true
         create-args: >-
           python=3.12
@@ -67,7 +67,7 @@ runs:
       with:
         miniforge-variant: Miniforge3
         use-mamba: true
-        environment-file: env/omnibenchmark_conda.yaml
+        environment-file: ./.github/workflows/env/omnibenchmark_conda.yaml
         python-version: "3.12"
         auto-update-conda: true
         channels: conda-forge
