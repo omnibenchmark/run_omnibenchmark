@@ -3,7 +3,7 @@ name: test_apptainer
 on: [push]
 
 jobs:
-  plain_conda:
+  apptainer:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -33,7 +33,26 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set variabless for global use
+    - name: Create omnibenchmark conda env file
+      id: create_env
+      shell: bash
+      run: |          
+          touch omnibenchmark_conda.yaml
+          echo "name: omnibenchmark_deps"          >> omnibenchmark_conda.yaml
+          echo "channels:"                         >> omnibenchmark_conda.yaml
+          echo "  - conda-forge"                   >> omnibenchmark_conda.yaml
+          echo "  - bioconda"                      >> omnibenchmark_conda.yaml
+          echo "  - nodefaults"                    >> omnibenchmark_conda.yaml
+          echo "dependencies:"                     >> omnibenchmark_conda.yaml
+          echo "  - conda-forge::python == 3.12"   >> omnibenchmark_conda.yaml
+          echo "  - conda-forge::pip >= 25.0.0"    >> omnibenchmark_conda.yaml
+          echo "  - conda-forge::mamba >= 1.5.10"  >> omnibenchmark_conda.yaml
+          echo "  - conda-forge::conda >= 25.5.1"  >> omnibenchmark_conda.yaml
+          mkdir -p env
+          mv omnibenchmark_conda.yaml env
+          cat env/omnibenchmark_conda.yaml
+      
+    - name: Set variables for global use
       id: vars
       shell: bash
       run: |
@@ -55,11 +74,11 @@ runs:
       uses: mamba-org/setup-micromamba@v2
       if: (inputs.backend == 'apptainer' || inputs.backend == 'conda') && inputs.conda_handler == 'micromamba'
       with:
-        environment-file: ./.github/workflows/env/omnibenchmark_conda.yaml
+        environment-file: env/omnibenchmark_conda.yaml
         cache-environment: true
         create-args: >-
           python=3.12
-        post-cleanup: environment # all
+        post-cleanup: environment
 
     - name: Install ob requirements (with) miniforge
       uses: conda-incubator/setup-miniconda@v3
@@ -67,7 +86,7 @@ runs:
       with:
         miniforge-variant: Miniforge3
         use-mamba: true
-        environment-file: ./.github/workflows/env/omnibenchmark_conda.yaml
+        environment-file: env/omnibenchmark_conda.yaml
         python-version: "3.12"
         auto-update-conda: true
         channels: conda-forge
