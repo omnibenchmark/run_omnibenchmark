@@ -67,20 +67,6 @@ directive but rather
 
 to compute elsewhere, and not GitHub's runners.
 
-## Conda envs
-
-When using conda as backend, the `benchmarking yaml` has to specify the adequate `conda yaml` environment files. Please track these files somewhere the action can find them. For instance, [our `Clustering_conda.yml` example](tests/Clustering_conda.yml) points to ([line 13](tests/Clustering_conda.yml#L13))
-
-```yaml
-software_backend: conda
-software_environments:
-  clustbench:
-    description: "clustbench on py3.12.6"
-    conda: envs/clustbench.yml ## <------ relative path to the conda envs
-```
-
-so `clustbench.yml` must be available at [`envs/clustbench.yml`](tests/envs/fcps.yml), which is a relative path to the `Clustering_conda.yaml` file path.
-
 # Disclaimer of warranty
 
 Omnibenchmark incorporates great FOSS components, including but not limited to: snakemake, easybuild, apptainer, lmod and git. Thank you!
