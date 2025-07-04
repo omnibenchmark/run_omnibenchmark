@@ -35,6 +35,7 @@ runs:
   steps:
     - name: Create omnibenchmark conda env file
       id: create_env
+      shell: bash
       run: |
           touch omnibenchmark_conda.yaml
           echo "name: omnibenchmark_deps"          >> omnibenchmark_conda.yaml
