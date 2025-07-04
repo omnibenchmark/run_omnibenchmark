@@ -38,8 +38,6 @@ runs:
       shell: bash
       run: |          
           touch omnibenchmark_conda.yaml
-          cat <<EOF > omnibenchmark_conda.yaml
-          EOF
           echo "name: omnibenchmark_deps"          >> omnibenchmark_conda.yaml
           echo "channels:"                         >> omnibenchmark_conda.yaml
           echo "  - conda-forge"                   >> omnibenchmark_conda.yaml
@@ -53,7 +51,6 @@ runs:
           mkdir -p env
           mv omnibenchmark_conda.yaml env
           cat env/omnibenchmark_conda.yaml
-          ls -l ${{ github.workspace }}/env/omnibenchmark_conda.yaml
       
     - name: Set variables for global use
       id: vars
