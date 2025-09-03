@@ -105,7 +105,7 @@ runs:
         CORES: ${{ steps.vars.outputs.CORES }}        
       shell: bash -l {0}
       run: |
-        ob run benchmark -b "$YAML" --local-storage --cores "$CORES" --yes
+        ob run benchmark -b "$YAML" --local-storage --cores "$CORES" --yes --scheduler greedy
          
     - name: Upload benchmark files (artifact)
       uses: actions/upload-artifact@v4
