@@ -96,7 +96,7 @@ runs:
         OB_BRANCH: ${{ steps.vars.outputs.OB_BRANCH }} 
       shell: bash -l {0}
       run: |
-        pip install git+https://github.com/omnibenchmark/omnibenchmark.git@"$OB_BRANCH"
+        pip install git+https://github.com/omnibenchmark/omnibenchmark.git@"$OB_BRANCH"#egg=omnibenchmark[s3]
 
     - name: Run benchmark
       env:
