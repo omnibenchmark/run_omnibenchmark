@@ -15,4 +15,4 @@ jobs:
           yaml: tests/Clustering_apptainer.yml
           backend: apptainer
           cores: 1
-
+          omnibenchmark_branch: dev

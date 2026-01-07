@@ -16,4 +16,4 @@ jobs:
           backend: conda
           cores: 1
           conda_handler: micromamba
-
+          omnibenchmark_branch: dev
