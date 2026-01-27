@@ -16,5 +16,5 @@ jobs:
           backend: conda
           cores: 1
           conda_handler: miniforge
-          omnibenchmark_branch: dev
+          omnibenchmark_branch: main
 
