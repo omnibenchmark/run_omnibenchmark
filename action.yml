@@ -112,7 +112,7 @@ runs:
         EXTRA_ARGS: ${{ inputs.extra_args }}
       shell: bash -l {0}
       run: |
-        ob run "$YAML" --cores "$CORES" "$EXTRA_ARGS"
+        ob run "$YAML" --cores "$CORES" $EXTRA_ARGS
          
     - name: Upload benchmark files (artifact)
       uses: actions/upload-artifact@v4
