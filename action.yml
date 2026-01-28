@@ -115,7 +115,8 @@ runs:
       run: |
         ob run "$YAML" --cores "$CORES" $EXTRA_ARGS
          
-    - name: Upload benchmark files (artifact)
+    - name: Upload benchmark files (artifacts, logs)
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: Benchmarking results

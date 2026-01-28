@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+
+- Add extra args as argument to the YAML, so singularity / ob calls can be tuned
+- Export $SINGULARITY_HOME = ${{ github.workspace }}
+- Upload `out` as artifacts even after `ob run` failure
+
 ## [0.2.0] Added compatibility with omnibenchmark 0.4.x
 
 Replaced CLI calls and test YAMLs to be compatible with ob 0.4.0, which changed its CLI for `ob run`.
