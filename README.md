@@ -49,6 +49,10 @@ Which github.com/omnibenchmark/omnibenchmark branch to use. Defaults to `main`.
 
 When using `conda` as a `backend`, the conda capabilities wrapper. Either `micromamba` or `miniforge`. Defaults to `micromamba`.
 
+## `extra_args`
+
+Extra args to append to the `ob run [YAML] --cores [CORES]` call. If starting with `--`, these are passed to snakemake.
+
 # Notes
 
 ## Own runners
