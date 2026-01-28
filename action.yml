@@ -110,6 +110,7 @@ runs:
         BACKEND: ${{ steps.vars.outputs.BACKEND }}
         CORES: ${{ steps.vars.outputs.CORES }}
         EXTRA_ARGS: ${{ inputs.extra_args }}
+        SINGULARITY_HOME: ${{ github.workspace }}
       shell: bash -l {0}
       run: |
         ob run "$YAML" --cores "$CORES" $EXTRA_ARGS
